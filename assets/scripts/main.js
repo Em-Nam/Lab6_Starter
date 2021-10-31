@@ -24,14 +24,42 @@ async function init() {
     console.log('Recipe fetch unsuccessful');
     return;
   };
+
+  console.log(recipeData);  //check recipes loaded in
+
   // Add the first three recipe cards to the page
   createRecipeCards();
   // Make the "Show more" button functional
   bindShowMore();
 }
 
+
 async function fetchRecipes() {
   return new Promise((resolve, reject) => {
+    // console.log(recipes[0]);
+
+    for (var i = 0; i < recipes.length; i++) {
+        // console.log(recipes[i]);
+        let key = recipes[i];
+        fetch(recipes[i])
+        .then(response => response.json())
+        // .then(result => promises.push(result))
+        .then(function(data){
+            // console.log(data);
+            // console.log(key);
+            recipeData[key] = data;
+            // console.log(recipeData);
+        })
+        .then(function(){
+            if ((recipes.length == Object.keys(recipeData).length)){
+                resolve(true);
+            }
+        })
+        .catch(function(){
+            reject(false);
+        });
+    }
+
     // This function is called for you up above
     // From this function, you are going to fetch each of the recipes in the 'recipes' array above.
     // Once you have that data, store it in the 'recipeData' object. You can use whatever you like
@@ -46,7 +74,21 @@ async function fetchRecipes() {
   });
 }
 
+
+//This should be okay but haven't tested
 function createRecipeCards() {
+    console.log("create cards");
+    
+    for (const [key, value] of Object.entries(recipeData)) {
+        console.log(`${key}: ${value}`);
+        const newRecipeCard = document.createElement('recipe-card');
+        newRecipeCard.data = value;
+        console.log(newRecipeCard);
+        let main = document.querySelector('main');
+        main.appendChild(newRecipeCard);
+        // document.body.main.append(newRecipeCard);   //THIS GIVES AN ERROR?
+    }
+
   // This function is called for you up above.
   // From within this function you can access the recipe data from the JSON 
   // files with the recipeData Object above. Make sure you only display the 
