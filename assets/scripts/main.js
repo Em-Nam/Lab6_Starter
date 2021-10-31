@@ -83,7 +83,10 @@ function createRecipeCards() {
         console.log(`${key}: ${value}`);
         const newRecipeCard = document.createElement('recipe-card');
         newRecipeCard.data = value;
-        document.body.main.append(newRecipeCard);
+        console.log(newRecipeCard);
+        let main = document.querySelector('main');
+        main.appendChild(newRecipeCard);
+        // document.body.main.append(newRecipeCard);   //THIS GIVES AN ERROR?
     }
 
   // This function is called for you up above.

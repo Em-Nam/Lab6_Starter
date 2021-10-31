@@ -5,6 +5,7 @@ class RecipeCard extends HTMLElement {
     // You'll want to attach the shadow DOM here
     super();
     let shadow = this.attachShadow({mode: 'open'});
+
   }
 
   set data(data) {
@@ -85,6 +86,7 @@ class RecipeCard extends HTMLElement {
         font-size: 12px;
       }
     `;
+
     styleElem.innerHTML = styles;
 
     // Here's the root element that you'll want to attach all of your other elements to
@@ -102,6 +104,100 @@ class RecipeCard extends HTMLElement {
     // created in the constructor()
 
     // Part 1 Expose - TODO
+
+    
+    // const imgURL = searchForKey(this.image, 'thumbnail');
+    // // const imgURL = 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190807-ghost-cookies-0031-landscape-pf-1566483952.jpg';
+    // console.log(imgURL);
+    // const newImg = document.createElement('img');
+    // newImg.setAttribute('src', imgURL);
+    // card.appendChild(newImg);
+    // document.body.appendChild(card);
+
+    
+    //Add title and org paragraphs
+    console.log(this);
+    let recipeTitle = searchForKey(data, 'headline');
+    let recipeTitleTxt = document.createTextNode(recipeTitle);
+    let recipeURL = getUrl(data);
+    console.log(recipeTitleTxt);
+
+    const title = document.createElement('p');
+    title.classList.add('title');
+    title.appendChild(recipeTitleTxt);
+    
+    const titleLink = document.createElement('a');
+    titleLink.setAttribute('href', recipeURL);
+    title.appendChild(titleLink);
+
+
+    const org = document.createElement('p');
+    org.classList.add('organization');
+    let recipeOrg = document.createTextNode(searchForKey(data, 'name'));
+    org.appendChild(recipeOrg);
+
+    //Add image
+    let recipeImg = searchForKey(data, 'thumbnailUrl');
+    const image = document.createElement('img');
+    image.setAttribute('src', recipeImg);
+    image.setAttribute('alt', recipeTitle);
+
+
+    //add div with rating
+    const rating = document.createElement('div');
+
+    let recipeRating = searchForKey(data, 'ratingValue');
+    let recipeCount = searchForKey(data, 'ratingCount');
+
+    const spanRating = document.createElement('span');
+    const spanCount = document.createElement('span');
+    const ratingImg = document.createElement('img');
+
+    if (recipeCount === undefined || recipeRating === undefined){
+        spanCount.append(document.createTextNode('No Reviews'));
+        // spanCount.append(document.createTextNode(recipeCount));
+    } else {
+        spanRating.append(document.createTextNode(recipeRating));
+        spanCount.append(document.createTextNode(recipeCount));
+
+        let ratingImgStr = 'assets/images/icons/' + Math.round(recipeRating) + '-star.svg';
+        ratingImg.setAttribute('src', ratingImgStr);
+        ratingImg.setAttribute('alt', Math.round(recipeRating) + 'stars');
+    }
+
+    rating.append(spanRating, ratingImg, spanCount);
+
+
+    //add time
+    const timeElement = document.createElement('time');
+    let recipeTime = searchForKey(data, 'totalTime');
+    recipeTime = convertTime(recipeTime);
+    timeElement.appendChild(document.createTextNode(recipeTime));
+
+    //add ingredients paragraph
+    const ingredients = document.createElement('p');
+    ingredients.classList.add('ingredients');
+    let recipeIngredientsArr = searchForKey(data, 'recipeIngredient');
+    let recipeIngredients = createIngredientList(recipeIngredientsArr);
+    ingredients.appendChild(document.createTextNode(recipeIngredients));
+
+
+    //Add elements to the card
+    this.shadowRoot.appendChild(styleElem);
+    this.shadowRoot.appendChild(card);
+
+
+    // card.appendChild(styles);
+    card.appendChild(image);
+    card.appendChild(title);
+    card.appendChild(org);
+    card.appendChild(rating);
+    card.appendChild(timeElement);
+    card.appendChild(ingredients);
+
+
+    console.log(this);
+
   }
 }
 
