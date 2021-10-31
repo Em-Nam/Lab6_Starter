@@ -154,8 +154,7 @@ class RecipeCard extends HTMLElement {
     const ratingImg = document.createElement('img');
 
     if (recipeCount === undefined || recipeRating === undefined){
-        spanCount.append(document.createTextNode('No Reviews'));
-        // spanCount.append(document.createTextNode(recipeCount));
+        spanRating.append(document.createTextNode('No Reviews'));;
     } else {
         spanRating.append(document.createTextNode(recipeRating));
         spanCount.append(document.createTextNode('(' + recipeCount + ')'));
@@ -163,10 +162,10 @@ class RecipeCard extends HTMLElement {
         let ratingImgStr = 'assets/images/icons/' + Math.round(recipeRating) + '-star.svg';
         ratingImg.setAttribute('src', ratingImgStr);
         ratingImg.setAttribute('alt', Math.round(recipeRating) + 'stars');
+
     }
 
     rating.append(spanRating, ratingImg, spanCount);
-
 
     //add time
     const timeElement = document.createElement('time');
