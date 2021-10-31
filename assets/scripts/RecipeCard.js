@@ -113,7 +113,6 @@ class RecipeCard extends HTMLElement {
     // newImg.setAttribute('src', imgURL);
     // card.appendChild(newImg);
     // document.body.appendChild(card);
-
     
     //Add title and org paragraphs
     console.log(this);
@@ -145,6 +144,7 @@ class RecipeCard extends HTMLElement {
 
     //add div with rating
     const rating = document.createElement('div');
+    rating.classList.add('rating');
 
     let recipeRating = searchForKey(data, 'ratingValue');
     let recipeCount = searchForKey(data, 'ratingCount');
@@ -158,7 +158,7 @@ class RecipeCard extends HTMLElement {
         // spanCount.append(document.createTextNode(recipeCount));
     } else {
         spanRating.append(document.createTextNode(recipeRating));
-        spanCount.append(document.createTextNode(recipeCount));
+        spanCount.append(document.createTextNode('(' + recipeCount + ')'));
 
         let ratingImgStr = 'assets/images/icons/' + Math.round(recipeRating) + '-star.svg';
         ratingImg.setAttribute('src', ratingImgStr);
